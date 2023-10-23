@@ -1,7 +1,7 @@
 FROM golang:1.18 as build
 
 EXPOSE 8080
-COPY .. /app
+COPY . /app
 WORKDIR /app
 CMD ["go", "run", "main.go"]
 
