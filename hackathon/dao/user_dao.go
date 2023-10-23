@@ -21,6 +21,7 @@ func init() {
 
 	*/
 	// Get MySQL connection details from environment variables
+
 	mysqlUser := os.Getenv("MYSQL_USER")
 	mysqlUserPwd := os.Getenv("MYSQL_PASSWORD")
 	mysqlHost := os.Getenv("MYSQL_HOST")
