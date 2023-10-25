@@ -3,51 +3,47 @@ package dao
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
+
+	_ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/mysql"
+	"github.com/joho/godotenv"
 )
 
 var Db *sql.DB
 
 func init() {
-	// ①-1
-	/*
-		if err := godotenv.Load(".env_mysql"); err != nil {
-			log.Fatalf("Error loading .env_mysql file: %v\n", err)
-		}
+	// Load environment variables from .env
+	if err := godotenv.Load(".env"); err != nil {
+		log.Fatalf("Error loading .env_mysql file: %v\n", err)
+	}
 
-	*/
 	// Get MySQL connection details from environment variables
+	dbUser := os.Getenv("MYSQL_USER")
+	dbPwd := os.Getenv("MYSQL_PASSWORD")
+	instanceConnectionName := os.Getenv("MYSQL_HOST")
+	dbName := os.Getenv("MYSQL_DATABASE")
 
-	mysqlUser := os.Getenv("MYSQL_USER")
-	mysqlUserPwd := os.Getenv("MYSQL_PASSWORD")
-	mysqlHost := os.Getenv("MYSQL_HOST")
-	mysqlDatabase := os.Getenv("MYSQL_DATABASE")
-	fmt.Printf("Yo %s\n", mysqlUser)
-	// ①-2
-	_db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@%s/%s", mysqlUser, mysqlUserPwd, mysqlHost, mysqlDatabase))
+	fmt.Printf("TEST %s, %s, %s\n", dbUser, instanceConnectionName, dbName)
+
+	dbURI := fmt.Sprintf("%s:%s@unix(/cloudsql/%s)/%s?parseTime=true", dbUser, dbPwd, instanceConnectionName, dbName)
+	dbPool, err := sql.Open("mysql", dbURI)
 	if err != nil {
-		log.Fatalf("fail: sql.Open, %v\n", err)
+		log.Fatalf("Error opening database connection: %v", err)
+		return
 	}
-	// ①-3
-	if err := _db.Ping(); err != nil {
-		log.Fatalf("fail: _db.Ping, %v\n", err)
-	}
-	Db = _db
+	Db = dbPool
 }
 
-// ③ Ctrl+CでHTTPサーバー停止時にDBをクローズする
-
+// CloseDBWithSysCall closes the database connection on Ctrl+C or SIGTERM
 func CloseDBWithSysCall() {
 	sig := make(chan os.Signal, 1)
 	signal.Notify(sig, syscall.SIGTERM, syscall.SIGINT)
 	go func() {
 		s := <-sig
 		log.Printf("received syscall, %v", s)
-
 		if err := Db.Close(); err != nil {
 			log.Fatal(err)
 		}
