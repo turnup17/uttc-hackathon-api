@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
 	"log"
 	"os"
 	"os/signal"
@@ -14,11 +15,11 @@ var Db *sql.DB
 
 func init() {
 	// ①-1
-	/*
-		if err := godotenv.Load(".env"); err != nil {
-			log.Fatalf("Error loading .env file: %v\n", err)
-		}
-	*/
+
+	if err := godotenv.Load(".env"); err != nil {
+		log.Fatalf("Error loading .env file: %v\n", err)
+	}
+
 	// Get MySQL connection details from environment variables
 
 	mysqlUser := os.Getenv("MYSQL_USER")

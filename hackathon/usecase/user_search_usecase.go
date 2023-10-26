@@ -8,10 +8,10 @@ import (
 	"net/http"
 )
 
-func Search_usecase(w http.ResponseWriter, r *http.Request, name string) ([]byte, error) {
+func Search_usecase(w http.ResponseWriter, r *http.Request) ([]byte, error) {
 	var bytes []byte
 
-	rows, err := dao.Db.Query("SELECT id, name, age FROM user WHERE name = ?", name)
+	rows, err := dao.Db.Query("SELECT id, name, age FROM user")
 	if err != nil {
 		log.Printf("fail: dao.Db.Query, %v\n", err)
 		w.WriteHeader(http.StatusInternalServerError)

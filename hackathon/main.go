@@ -10,7 +10,19 @@ import (
 
 // ② /userでリクエストされたらnameパラメーターと一致する名前を持つレコードをJSON形式で返す
 func handler(w http.ResponseWriter, r *http.Request) {
+	origin := r.Header.Get("Origin")
+	if origin == "http://localhost:3000" || origin == "localhost:3000" {
+		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+	} else {
+		w.Header().Set("Access-Control-Allow-Origin", "https://uttc-hackathon-mj7nskhsm-turnup17s-projects.vercel.app")
+	}
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST") // Specify the allowed methods
+
 	switch r.Method {
+	case http.MethodOptions:
+		// Handle the preflight request by responding with the allowed headers and methods
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.WriteHeader(http.StatusOK)
 	case http.MethodPost:
 		controller.Register_controller(w, r)
 	case http.MethodGet:
