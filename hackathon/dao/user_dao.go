@@ -19,7 +19,6 @@ func init() {
 			log.Fatalf("Error loading .env file: %v\n", err)
 		}
 	*/
-
 	// Get MySQL connection details from environment variables
 
 	mysqlUser := os.Getenv("MYSQL_USER")

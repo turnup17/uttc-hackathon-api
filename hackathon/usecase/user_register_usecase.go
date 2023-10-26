@@ -9,6 +9,9 @@ import (
 	"net/http"
 )
 
+func Check_input(user_info model.UserResForHTTPPost) bool {
+	return user_info.Name == "" || len(user_info.Name) > 50 || user_info.Age < 20 || user_info.Age > 80
+}
 func Register_usecase(w http.ResponseWriter, r *http.Request, user_info model.UserResForHTTPPost) (model.UserResForID, error) {
 	var response model.UserResForID
 	if Check_input(user_info) {
@@ -27,7 +30,4 @@ func Register_usecase(w http.ResponseWriter, r *http.Request, user_info model.Us
 	}
 	response = model.UserResForID{Id: ulid.String()}
 	return response, nil
-}
-func Check_input(user_info model.UserResForHTTPPost) bool {
-	return user_info.Name == "" || len(user_info.Name) > 50 || user_info.Age < 20 || user_info.Age > 80
 }
