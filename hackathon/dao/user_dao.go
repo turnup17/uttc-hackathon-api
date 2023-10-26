@@ -15,9 +15,11 @@ var Db *sql.DB
 
 func init() {
 	// ①-1
-
-	if err := godotenv.Load(".env"); err != nil {
-		log.Fatalf("Error loading .env file: %v\n", err)
+	_, err := os.Stat(".env")
+	if err == nil {
+		if err := godotenv.Load(".env"); err != nil {
+			log.Fatalf("Error loading .env file: %v\n", err)
+		}
 	}
 
 	// Get MySQL connection details from environment variables
