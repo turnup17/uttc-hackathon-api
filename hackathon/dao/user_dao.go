@@ -15,18 +15,18 @@ var Db *sql.DB
 func init() {
 	// ①-1
 	/*
-		if err := godotenv.Load(".env_mysql"); err != nil {
-			log.Fatalf("Error loading .env_mysql file: %v\n", err)
+		if err := godotenv.Load(".env"); err != nil {
+			log.Fatalf("Error loading .env file: %v\n", err)
 		}
-
 	*/
+
 	// Get MySQL connection details from environment variables
 
 	mysqlUser := os.Getenv("MYSQL_USER")
 	mysqlUserPwd := os.Getenv("MYSQL_PASSWORD")
 	mysqlHost := os.Getenv("MYSQL_HOST")
 	mysqlDatabase := os.Getenv("MYSQL_DATABASE")
-	fmt.Printf("Yo %s\n", mysqlUser)
+	//fmt.Printf("MYSQL_USER: %s\n", mysqlUser)
 	// ①-2
 	_db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@%s/%s", mysqlUser, mysqlUserPwd, mysqlHost, mysqlDatabase))
 	if err != nil {
