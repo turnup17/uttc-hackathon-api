@@ -9,15 +9,16 @@ import (
 )
 
 func Register_controller(w http.ResponseWriter, r *http.Request) {
-	var user_info model.UserResForHTTPPost
+	//var user_info model.UserResForHTTPPost
+	var knowledge_info model.KnowledgeResForHTTPPost
 	decoded := json.NewDecoder(r.Body)
-	if err := decoded.Decode(&user_info); err != nil {
+	if err := decoded.Decode(&knowledge_info); err != nil {
 		log.Printf("fail: json.Decode, %v\n", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	response, err := usecase.Register_usecase(w, r, user_info)
+	response, err := usecase.Register_usecase(w, r, knowledge_info)
 	if err != nil {
 		return
 	}
