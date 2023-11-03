@@ -19,7 +19,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		w.Header().Set("Access-Control-Allow-Origin", "https://uttc-hackathon-web.vercel.app")
 	}
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST") // Specify the allowed methods
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT") // Specify the allowed methods
 
 	switch r.Method {
 	case http.MethodOptions:
@@ -41,6 +41,19 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func knowledgeDeleteHandler(w http.ResponseWriter, r *http.Request) {
+	origin := r.Header.Get("Origin")
+	if origin == "http://localhost:3000" || origin == "localhost:3000" {
+		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+	} else {
+		w.Header().Set("Access-Control-Allow-Origin", "https://uttc-hackathon-web.vercel.app")
+	}
+	w.Header().Set("Access-Control-Allow-Methods", "DELETE") // Specify the allowed methods
+
+	if r.Method == http.MethodOptions {
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.WriteHeader(http.StatusOK)
+	}
+
 	if r.Method != http.MethodDelete {
 		w.WriteHeader(http.StatusBadRequest)
 		return
