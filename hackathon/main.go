@@ -31,6 +31,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	case http.MethodGet:
 		// ②-1
 		controller.Search_controller(w, r)
+	case http.MethodPut:
+		controller.Edit_controller(w, r)
 	default:
 		log.Printf("fail: HTTP Method is %s\n", r.Method)
 		w.WriteHeader(http.StatusBadRequest)

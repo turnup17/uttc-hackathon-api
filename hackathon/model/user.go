@@ -37,3 +37,12 @@ type KnowledgeResForID struct {
 type KnowledgeReqForDelete struct {
 	Id string `json:"id"`
 }
+type KnowledgeReqForHTTPPUT struct {
+	Id         string    `json:"id"`
+	Name       string    `json:"name"`
+	Url        string    `json:"url"`
+	Date       time.Time `json:"date"`
+	Category   int       `json:"category"`
+	Details    string    `json:"details"`
+	Curriculum int       `json:"curriculum"`
+}
