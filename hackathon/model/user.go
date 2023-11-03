@@ -34,3 +34,6 @@ type KnowledgeResForHTTPPost struct {
 type KnowledgeResForID struct {
 	Id string `json:"id"`
 }
+type KnowledgeReqForDelete struct {
+	Id string `json:"id"`
+}
